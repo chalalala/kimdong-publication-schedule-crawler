@@ -1,11 +1,15 @@
 // 'use client';
 import axios from 'axios';
 import Image from 'next/image';
+import https from 'https';
 // import { useEffect } from 'react';
 
+const agent = new https.Agent({
+  rejectUnauthorized: false,
+});
+
 async function scrapeSite(keyword: string) {
-  const url = `http://www.google.com/search`;
-  // const url = `http://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-5-2024`;
+  const url = `http://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-5-2024`;
   // const { data } = await axios.get(url, {
   //   headers: {
   //     'Content-Type': 'text/html; charset=utf-8',
@@ -16,13 +20,8 @@ async function scrapeSite(keyword: string) {
 
   const options = {
     method: 'GET',
-    // url,
-    url: 'http://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-5-2024',
-    headers: {
-      cookie:
-        '_landing_page=%25252Fblogs%25252Flich-phat-hanh-sach-dinh-ky%25252Flich-phat-hanh-sach-dinh-ki-thang-5-2024; _orig_referer=; shop_ref=',
-      // 'User-Agent': 'insomnia/9.1.0',
-    },
+    url,
+    httpsAgent: agent,
   };
 
   const { data } = await axios.request(options);

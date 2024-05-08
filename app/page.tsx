@@ -1,44 +1,14 @@
-// 'use client';
-import axios from 'axios';
+import { scrapeSite } from '@/utils/scrapeSite';
 import Image from 'next/image';
-import https from 'https';
-// import { useEffect } from 'react';
 
-const agent = new https.Agent({
-  rejectUnauthorized: false,
-});
-
-async function scrapeSite(keyword: string) {
-  const url = `http://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-5-2024`;
-  // const { data } = await axios.get(url, {
-  //   headers: {
-  //     'Content-Type': 'text/html; charset=utf-8',
-  //     Accept: 'text/html',
-  //     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0',
-  //   },
-  // });
-
-  const options = {
-    method: 'GET',
-    url,
-    httpsAgent: agent,
-  };
-
-  const { data } = await axios.request(options);
-
-  return data;
-}
-
-export default function Home() {
-  const keyword = 'coffee'; // change with any keyword you want
-
-  // useEffect(() => {
-  scrapeSite(keyword)
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => console.log(err));
-  // });
+export default async function Home() {
+  try {
+    const url = `http://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-5-2024`;
+    const res = await scrapeSite(url);
+    console.log('🚀 ~ Home ~ res:', res);
+  } catch (err) {
+    console.error(err);
+  }
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>

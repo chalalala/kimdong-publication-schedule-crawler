@@ -13,35 +13,41 @@ export async function scrapeSite(url: string) {
     }),
   };
 
-  const { data } = await axios.request(options);
-  const $ = load(data);
-
   const results: {
     name: string;
     price: string;
     releaseDate: string;
   }[] = [];
 
-  let currentReleaseDate = '';
+  let hasError: boolean = false;
 
-  $('tr').each((_, elem) => {
-    const releaseDate = $(elem).find('td:first-of-type').find('p:last-of-type').text();
+  try {
+    const { data } = await axios.request(options);
+    const $ = load(data);
 
-    if (!!releaseDate.trim()) {
-      currentReleaseDate = releaseDate;
-    }
+    let currentReleaseDate = '';
 
-    const name = $(elem).find('td:nth-child(2)').text();
+    $('tr').each((_, elem) => {
+      const releaseDate = $(elem).find('td:first-of-type').find('p:last-of-type').text();
 
-    // ignore empty rows
-    if (!name.trim()) {
-      return;
-    }
+      if (!!releaseDate.trim()) {
+        currentReleaseDate = releaseDate;
+      }
 
-    const price = $(elem).find('td:nth-child(3)').text();
+      const name = $(elem).find('td:nth-child(2)').text();
 
-    results.push({ name, price, releaseDate: currentReleaseDate });
-  });
+      // ignore empty rows
+      if (!name.trim()) {
+        return;
+      }
 
-  return results;
+      const price = $(elem).find('td:nth-child(3)').text();
+
+      results.push({ name, price, releaseDate: currentReleaseDate });
+    });
+  } catch (error) {
+    hasError = true;
+  } finally {
+    return { results, hasError };
+  }
 }

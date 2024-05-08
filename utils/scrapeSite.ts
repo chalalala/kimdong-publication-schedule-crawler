@@ -4,6 +4,12 @@ import axios from 'axios';
 import { load } from 'cheerio';
 import https from 'https';
 
+export type ResData = {
+  name: string;
+  price: string;
+  releaseDate: string;
+};
+
 export async function scrapeSite(url: string) {
   const options = {
     method: 'GET',
@@ -13,13 +19,7 @@ export async function scrapeSite(url: string) {
     }),
   };
 
-  const results: {
-    name: string;
-    price: string;
-    releaseDate: string;
-  }[] = [];
-
-  let hasError: boolean = false;
+  const results: ResData[] = [];
 
   try {
     const { data } = await axios.request(options);
@@ -45,9 +45,8 @@ export async function scrapeSite(url: string) {
 
       results.push({ name, price, releaseDate: currentReleaseDate });
     });
+    return { results };
   } catch (error) {
-    hasError = true;
-  } finally {
-    return { results, hasError };
+    return { results, error };
   }
 }

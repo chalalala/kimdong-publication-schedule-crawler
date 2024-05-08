@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Inika } from 'next/font/google';
-import ScheduleLinkInput from '@/components/ScheduleLinkInput';
+import PublicationCrawler from '@/components/PublicationCrawler';
 
 const inika = Inika({ weight: '400', subsets: ['latin'] });
 
@@ -13,7 +13,7 @@ export default async function Home() {
             <CardTitle className={`${inika.className} text-[32px]`}>Kim Dong's Publication Crawler</CardTitle>
           </CardHeader>
           <CardContent>
-            <ScheduleLinkInput />
+            <PublicationCrawler />
           </CardContent>
         </Card>
       </div>

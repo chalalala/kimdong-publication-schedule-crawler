@@ -39,14 +39,12 @@ const ScheduleLinkInput = ({ sendDataToParent }: Props) => {
   return (
     <>
       <div className='mb-1.5 text-sm'>Publication schedule link</div>
-      <div className='flex w-full space-x-2'>
+      <form className='flex w-full space-x-2' action={handleGetScrapeSite}>
         <div className='flex flex-1 flex-col space-y-1.5'>
           <Input id='url' placeholder='Enter schedule link here' value={inputUrl} onChange={handleChangeInputUrl} />
         </div>
-        <Button type='submit' onClick={handleGetScrapeSite}>
-          Crawl
-        </Button>
-      </div>
+        <Button type='submit'>Crawl</Button>
+      </form>
       {hasError ? <div className='mt-[10px] text-xs text-[#EB5757]'>Invalid link. Head to nxbkimdong.com.vn to get the correct link.</div> : null}
     </>
   );

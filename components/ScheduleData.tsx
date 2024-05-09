@@ -19,6 +19,8 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
   console.log('🚀 ~ CrawlLinkSuccess ~ data:', data);
   const [inputSearch, setInputSearch] = useState('');
 
+  const [selectedIds, setSelectedIds] = useState([]);
+
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setInputSearch(event.target.value);
   };
@@ -30,6 +32,12 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
   const handleSearch = () => {};
 
   const handleExport = () => {};
+
+  const handleSelectAll = () => {};
+
+  const handleDeselectAll = () => {
+    setSelectedIds([]);
+  };
 
   return (
     <>
@@ -68,14 +76,14 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
           <Button variant={'ghost'} className='h-8 px-2 text-xs text-[#475569]'>
             Select All
           </Button>
-          <Button variant={'ghost'} className='h-8 px-2 text-xs text-[#475569]'>
+          <Button onClick={handleDeselectAll} variant={'ghost'} className='h-8 px-2 text-xs text-[#475569]'>
             Deselect All
           </Button>
         </div>
       </div>
 
       <div>
-        <AccessibleTreeView />
+        <AccessibleTreeView selectedIds={selectedIds} />
         {/* <ol>
           {data.map((item, index) => {
             return (

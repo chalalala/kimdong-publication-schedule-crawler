@@ -24,11 +24,19 @@ export async function scrapeSite(url: string) {
 
   let currentReleaseDate = '';
 
-  $('tr').each((_, elem) => {
-    const releaseDate = $(elem).find('td:first-of-type').find('p:last-of-type').text();
+  const monthAndYear =
+    $('h1')
+      .text()
+      .match(/\d{1,2}\/\d{4}/)?.[0] || '';
 
-    if (!!releaseDate.trim()) {
-      currentReleaseDate = releaseDate;
+  const [_, year] = monthAndYear.split('/');
+
+  $('tr').each((_, elem) => {
+    const dateString = $(elem).find('td:first-of-type').find('p:last-of-type').text();
+    const [date, month] = dateString.split('.');
+
+    if (!!dateString.trim()) {
+      currentReleaseDate = new Date(`${year}-${month}-${date}`).toISOString();
     }
 
     const name = $(elem).find('td:nth-child(2)').text();

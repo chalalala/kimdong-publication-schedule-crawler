@@ -6,14 +6,14 @@ import { Button } from '@/components/ui/button';
 import { ChangeEvent, useState } from 'react';
 import { Download, SearchIcon, X } from 'lucide-react';
 import Link from 'next/link';
-import { ResData } from '@/utils/scrapeSite';
+import { CrawlData } from '@/types/CrawlData';
 
 type Props = {
-  data: ResData[];
+  data: CrawlData[];
   inputUrl: string;
 };
 
-const CrawlLinkSuccess = ({ data, inputUrl }: Props) => {
+const ScheduleData = ({ data, inputUrl }: Props) => {
   console.log('🚀 ~ CrawlLinkSuccess ~ data:', data);
   const [inputSearch, setInputSearch] = useState('');
 
@@ -83,4 +83,4 @@ const CrawlLinkSuccess = ({ data, inputUrl }: Props) => {
   );
 };
 
-export default CrawlLinkSuccess;
+export default ScheduleData;

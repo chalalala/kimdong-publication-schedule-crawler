@@ -1,14 +1,9 @@
 'use server';
 
+import { CrawlData } from '@/types/CrawlData';
 import axios from 'axios';
 import { load } from 'cheerio';
 import https from 'https';
-
-export type ResData = {
-  name: string;
-  price: string;
-  releaseDate: string;
-};
 
 export async function scrapeSite(url: string) {
   const options = {
@@ -19,7 +14,7 @@ export async function scrapeSite(url: string) {
     }),
   };
 
-  const results: ResData[] = [];
+  const results: CrawlData[] = [];
 
   try {
     const { data } = await axios.request(options);
@@ -55,6 +50,6 @@ export async function scrapeSite(url: string) {
     });
     return { results };
   } catch (error) {
-    return { results, error };
+    return { results: undefined, error };
   }
 }

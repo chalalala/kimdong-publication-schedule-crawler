@@ -10,7 +10,7 @@ export default async function Home() {
       <div>
         <Card className='w-[640px] shadow-lg'>
           <CardHeader className='pb-5'>
-            <CardTitle className={`${inika.className} text-[32px]`}>Kim Dong's Publication Crawler</CardTitle>
+            <CardTitle className={`${inika.className} text-[32px]`}>Kim Dong&apos;s Publication Crawler</CardTitle>
           </CardHeader>
           <CardContent>
             <PublicationCrawler />

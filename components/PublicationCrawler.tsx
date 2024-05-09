@@ -2,28 +2,19 @@
 
 import React, { useState } from 'react';
 import ScheduleLinkInput from './ScheduleLinkInput';
-import CrawlLinkSuccess from './CrawlLinkSuccess';
-import { ResData } from '@/utils/scrapeSite';
-
-type ResponseDataCrawl = {
-  data: ResData[];
-  inputUrl: string;
-  hasError: boolean;
-};
+import ScheduleData from './ScheduleData';
+import { CrawlData } from '@/types/CrawlData';
 
 const PublicationCrawler = () => {
-  const [resDataCrawl, setResDataCrawl] = useState<ResponseDataCrawl>();
-
-  const receiveDataFromChild = (data: ResponseDataCrawl) => {
-    setResDataCrawl(data);
-  };
+  const [crawlData, setCrawlData] = useState<CrawlData[] | undefined>();
+  const [url, setUrl] = useState('');
 
   return (
     <>
-      {resDataCrawl?.data && resDataCrawl?.inputUrl && !resDataCrawl.hasError ? (
-        <CrawlLinkSuccess data={resDataCrawl?.data} inputUrl={resDataCrawl?.inputUrl} />
+      {url && crawlData ? (
+        <ScheduleData data={crawlData} inputUrl={url} />
       ) : (
-        <ScheduleLinkInput sendDataToParent={receiveDataFromChild} />
+        <ScheduleLinkInput url={url} setUrl={setUrl} setCrawlData={setCrawlData} />
       )}
     </>
   );

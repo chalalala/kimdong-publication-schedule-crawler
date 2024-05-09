@@ -7,6 +7,7 @@ import { ChangeEvent, useState } from 'react';
 import { Download, SearchIcon, X } from 'lucide-react';
 import Link from 'next/link';
 import { CrawlData } from '@/types/CrawlData';
+import AccessibleTreeView from './AccessibleTreeView';
 
 type Props = {
   data: CrawlData[];
@@ -74,7 +75,8 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
       </div>
 
       <div>
-        <ol>
+        <AccessibleTreeView />
+        {/* <ol>
           {data.map((item, index) => {
             return (
               <li key={`${item}_${index}`}>
@@ -82,7 +84,7 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
               </li>
             );
           })}
-        </ol>
+        </ol> */}
       </div>
     </>
   );

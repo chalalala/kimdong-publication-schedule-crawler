@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-slot": "^1.0.2",
     "axios": "^1.6.8",
     "cheerio": "1.0.0-rc.12",
@@ -17,6 +18,7 @@
     "lucide-react": "^0.378.0",
     "next": "14.2.3",
     "react": "^18",
+    "react-accessible-treeview": "^2.9.0",
     "react-dom": "^18",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"

@@ -3,7 +3,7 @@
 import React, { FC } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { scrapeSite } from '@/utils/scrapeSite';
 import { CrawlData } from '@/types/CrawlData';
 
@@ -22,7 +22,6 @@ const ScheduleLinkInput: FC<Props> = ({ url, setUrl, setCrawlData }) => {
 
   const handleGetScrapeSite = async () => {
     try {
-      //   const url = `http://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-5-2024`;
       const { results, error } = await scrapeSite(url);
       setCrawlData(results);
       setHasError(error ? true : false);

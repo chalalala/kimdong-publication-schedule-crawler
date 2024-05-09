@@ -11,14 +11,19 @@ import { CrawlData } from '@/types/CrawlData';
 type Props = {
   data: CrawlData[];
   inputUrl: string;
+  setUrl: (url: string) => void;
 };
 
-const ScheduleData = ({ data, inputUrl }: Props) => {
+const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
   console.log('🚀 ~ CrawlLinkSuccess ~ data:', data);
   const [inputSearch, setInputSearch] = useState('');
 
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setInputSearch(event.target.value);
+  };
+
+  const handleRemoveUrl = () => {
+    setUrl('');
   };
 
   const handleSearch = () => {};
@@ -48,7 +53,7 @@ const ScheduleData = ({ data, inputUrl }: Props) => {
               <Link href={inputUrl} target='_blank' className='flex-1 truncate text-xs text-[#475569] underline hover:text-blue-500'>
                 {inputUrl}
               </Link>
-              <div className='flex size-4 cursor-pointer justify-center rounded-full border-2 bg-[#E2E8F0]'>
+              <div className='flex size-4 cursor-pointer justify-center rounded-full border-2 bg-[#E2E8F0]' onClick={handleRemoveUrl}>
                 <X size={12} />
               </div>
             </>

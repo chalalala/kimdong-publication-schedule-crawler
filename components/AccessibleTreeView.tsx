@@ -2,6 +2,7 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import React, { FC } from 'react';
 import TreeView, { NodeId, flattenTree } from 'react-accessible-treeview';
 import { Checkbox } from '@/components/ui/checkbox';
+import { CrawlData } from '@/types/CrawlData';
 
 const folder = {
   name: '',
@@ -32,13 +33,26 @@ const folder = {
 const data = flattenTree(folder);
 
 type Props = {
+  rawData: CrawlData[];
   selectedIds: NodeId[];
+  setSelectedIds: (ids: NodeId[]) => void;
+  setSelectedItems: (items: CrawlData[]) => void;
 };
 
-const AccessibleTreeView: FC<Props> = ({ selectedIds }) => {
+const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, setSelectedIds, setSelectedItems }) => {
   const ArrowIcon = ({ isOpen, className }: { isOpen: boolean; className: string }) => {
     return isOpen ? <ChevronDown className={className} /> : <ChevronRight className={className} />;
   };
+
+  const dates = new Set(rawData.map((entry) => entry.releaseDate));
+  const data = Array.from(dates).map((date) => {
+    return {
+      name: date,
+      children: rawData.filter((entry) => entry.releaseDate === date).map((entry) => ({ metadata: entry, name: `${entry.name} - ${entry.price}` })),
+    };
+  });
+
+  const flattenData = flattenTree({ name: '', children: data });
 
   const CheckBoxIcon = ({ variant, ...rest }: { variant: string } & any) => {
     switch (variant) {
@@ -58,7 +72,7 @@ const AccessibleTreeView: FC<Props> = ({ selectedIds }) => {
       <div>
         <div className='checkbox'>
           <TreeView
-            data={data}
+            data={flattenData}
             aria-label='Checkbox tree'
             multiSelect
             selectedIds={selectedIds}
@@ -66,6 +80,14 @@ const AccessibleTreeView: FC<Props> = ({ selectedIds }) => {
             propagateSelectUpwards
             propagateCollapse
             togglableSelect
+            onSelect={(props) => {
+              console.log(props);
+              const selectedIds = Array.from(props.treeState.selectedIds);
+              const selectedItems = flattenData.filter((item) => item.parent !== 0 && selectedIds.includes(item.id)).map((item) => item.metadata);
+              console.log('🚀 ~ MultiSelectCheckbox ~ selectedItems:', selectedItems);
+              // setSelectedIds(selectedIds);
+              // setSelectedItems(selectedItems);
+            }}
             nodeRenderer={({ element, isBranch, isExpanded, isSelected, isHalfSelected, getNodeProps, level, handleSelect, handleExpand }) => {
               return (
                 <div {...getNodeProps({ onClick: handleExpand })} style={{ marginLeft: 40 * (level - 1) }}>

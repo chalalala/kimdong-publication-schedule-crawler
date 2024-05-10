@@ -8,6 +8,7 @@ import { Download, SearchIcon, X } from 'lucide-react';
 import Link from 'next/link';
 import { CrawlData } from '@/types/CrawlData';
 import AccessibleTreeView from './AccessibleTreeView';
+import { NodeId } from 'react-accessible-treeview';
 
 type Props = {
   data: CrawlData[];
@@ -18,8 +19,8 @@ type Props = {
 const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
   console.log('🚀 ~ CrawlLinkSuccess ~ data:', data);
   const [inputSearch, setInputSearch] = useState('');
-
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedIds, setSelectedIds] = useState<NodeId[]>([]);
+  const [selectedItems, setSelectedItems] = useState<CrawlData[]>([]);
 
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setInputSearch(event.target.value);
@@ -83,7 +84,7 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
       </div>
 
       <div>
-        <AccessibleTreeView selectedIds={selectedIds} />
+        <AccessibleTreeView rawData={data} selectedIds={selectedIds} setSelectedIds={setSelectedIds} setSelectedItems={setSelectedItems} />
         {/* <ol>
           {data.map((item, index) => {
             return (

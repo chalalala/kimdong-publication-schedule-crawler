@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ChangeEvent, useState } from 'react';
@@ -17,19 +17,17 @@ type Props = {
 };
 
 const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
-  const [inputSearch, setInputSearch] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<NodeId[]>([]);
   const [selectedItems, setSelectedItems] = useState<(CrawlData | undefined)[]>([]);
 
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputSearch(event.target.value);
+    setSearchTerm(event.target.value);
   };
 
   const handleRemoveUrl = () => {
     setUrl('');
   };
-
-  const handleSearch = () => {};
 
   const handleExport = () => {};
 
@@ -39,16 +37,24 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
     setSelectedIds([]);
   };
 
+  const filteredData = useMemo(() => {
+    if (searchTerm) {
+      return data.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+
+    return data;
+  }, [data, searchTerm]);
+
   return (
     <>
       <div className='mb-1.5 text-sm'>Search by name</div>
-      <div className='flex w-full space-x-2'>
-        <div className='flex flex-1 flex-col space-y-1.5'>
-          <Input id='name' placeholder='Enter searching name here' value={inputSearch} onChange={handleChangeInputSearch} />
+      <div className='flex w-full gap-2'>
+        <div className='flex flex-1 gap-2'>
+          <Input id='name' placeholder='Enter searching name here' value={searchTerm} onChange={handleChangeInputSearch} />
+          <Button className='w-[56px]'>
+            <SearchIcon size={16} />
+          </Button>
         </div>
-        <Button onClick={handleSearch} className='w-[56px]'>
-          <SearchIcon size={16} />
-        </Button>
         <Button onClick={handleExport} variant={'ghost'} className='size-10 bg-[#E2E8F0] p-0'>
           <Download size={16} />
         </Button>
@@ -82,7 +88,7 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
         </div>
       </div>
 
-      <AccessibleTreeView rawData={data} selectedIds={selectedIds} setSelectedIds={setSelectedIds} setSelectedItems={setSelectedItems} />
+      <AccessibleTreeView rawData={filteredData} selectedIds={selectedIds} setSelectedIds={setSelectedIds} setSelectedItems={setSelectedItems} />
     </>
   );
 };

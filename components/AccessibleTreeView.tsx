@@ -4,6 +4,7 @@ import TreeView, { NodeId, flattenTree } from 'react-accessible-treeview';
 import { Checkbox } from '@/components/ui/checkbox';
 import { CrawlData } from '@/types/CrawlData';
 import { formatDate } from '@/utils/date';
+import { cn } from '@/lib/utils';
 
 interface Props {
   rawData: CrawlData[];
@@ -27,23 +28,11 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, setSelectedIds, s
 
   const flattenData = flattenTree({ name: '', children: data });
 
-  const CheckBoxIcon = ({ variant, ...rest }: { variant: string } & any) => {
-    switch (variant) {
-      case 'all':
-        return <Checkbox checked {...rest} />;
-      case 'none':
-        return <Checkbox checked={false} {...rest} />;
-      case 'some':
-        return <Checkbox checked={false} {...rest} />;
-      default:
-        return null;
-    }
-  };
-
   function MultiSelectCheckbox() {
     return (
       <div>
         <TreeView
+          className='space-y-4 [&_.tree-branch-wrapper]:space-y-2 [&_ul]:space-y-1'
           data={flattenData}
           aria-label='Checkbox tree'
           multiSelect
@@ -66,15 +55,20 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, setSelectedIds, s
               <div {...getNodeProps({ onClick: handleExpand })} style={{ marginLeft: 40 * (level - 1) }}>
                 <div className='flex items-center gap-2'>
                   {isBranch && <ArrowIcon className='size-4' isOpen={isExpanded} />}
-                  <CheckBoxIcon
-                    onClick={(e: any) => {
-                      handleSelect(e);
-                      console.log('🚀 ~ MultiSelectCheckbox ~ e:', e.target.value);
-                      e.stopPropagation();
-                    }}
-                    variant={isHalfSelected ? 'some' : isSelected ? 'all' : 'none'}
-                  />
-                  <span className='name'>{element.name}</span>
+
+                  <label
+                    className={cn('flex items-center gap-2', {
+                      'font-medium': isBranch,
+                    })}>
+                    <CheckBoxIcon
+                      onClick={(e: any) => {
+                        e.stopPropagation();
+                        handleSelect(e);
+                      }}
+                      variant={isHalfSelected ? 'some' : isSelected ? 'all' : 'none'}
+                    />
+                    {element.name}
+                  </label>
                 </div>
               </div>
             );
@@ -89,6 +83,19 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, setSelectedIds, s
       <MultiSelectCheckbox />
     </div>
   );
+};
+
+const CheckBoxIcon = ({ variant, ...rest }: { variant: string } & any) => {
+  switch (variant) {
+    case 'all':
+      return <Checkbox checked {...rest} />;
+    case 'none':
+      return <Checkbox checked={false} {...rest} />;
+    case 'some':
+      return <Checkbox checked={false} {...rest} />;
+    default:
+      return null;
+  }
 };
 
 export default memo(AccessibleTreeView);

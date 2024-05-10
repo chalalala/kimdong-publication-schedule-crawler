@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import TreeView, { NodeId, flattenTree } from 'react-accessible-treeview';
 import { Checkbox } from '@/components/ui/checkbox';
 import { CrawlData } from '@/types/CrawlData';
+import { formatDate } from '@/utils/date';
 
 const folder = {
   name: '',
@@ -47,7 +48,7 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, setSelectedIds, s
   const dates = new Set(rawData.map((entry) => entry.releaseDate));
   const data = Array.from(dates).map((date) => {
     return {
-      name: date,
+      name: formatDate(new Date(date)),
       children: rawData.filter((entry) => entry.releaseDate === date).map((entry) => ({ metadata: entry, name: `${entry.name} - ${entry.price}` })),
     };
   });

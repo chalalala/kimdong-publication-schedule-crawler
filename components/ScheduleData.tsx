@@ -47,7 +47,7 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl }) => {
       <div className='mb-1.5 text-sm'>Search by name</div>
       <div className='flex w-full gap-2'>
         <div className='flex flex-1 gap-2'>
-          <Input id='name' placeholder='Enter searching name here' value={searchTerm} onChange={handleChangeInputSearch} />
+          <Input type='search' id='name' placeholder='Enter searching name here' value={searchTerm} onChange={handleChangeInputSearch} />
           <Button className='w-[56px]'>
             <SearchIcon size={16} />
           </Button>

@@ -81,6 +81,7 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, setSelectedIds, s
             propagateSelectUpwards
             propagateCollapse
             togglableSelect
+            defaultExpandedIds={flattenData.map((item) => item.id)}
             onSelect={(props) => {
               console.log(props);
               const selectedIds = Array.from(props.treeState.selectedIds);

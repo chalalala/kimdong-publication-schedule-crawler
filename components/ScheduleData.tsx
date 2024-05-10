@@ -15,9 +15,10 @@ interface Props {
   data: CrawlData[];
   inputUrl: string;
   setUrl: (url: string) => void;
+  setCrawlData: (data: CrawlData[] | undefined) => void;
 }
 
-const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl }) => {
+const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<NodeId[]>([]);
   const [selectedItems, setSelectedItems] = useState<(CrawlData | undefined)[]>([]);
@@ -28,6 +29,7 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl }) => {
 
   const handleRemoveUrl = () => {
     setUrl('');
+    setCrawlData(undefined);
   };
 
   const handleExport = () => {
@@ -62,7 +64,7 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl }) => {
         <div className='flex min-w-0 flex-1 items-center'>
           {inputUrl ? (
             <>
-              <Link href={inputUrl} target='_blank' className='text-label flex-1 truncate text-xs underline hover:text-blue-500'>
+              <Link href={inputUrl} target='_blank' className='flex-1 truncate text-xs text-label underline hover:text-blue-500'>
                 {inputUrl}
               </Link>
               <div className='flex size-4 cursor-pointer justify-center rounded-full border-2 bg-[#E2E8F0]' onClick={handleRemoveUrl}>

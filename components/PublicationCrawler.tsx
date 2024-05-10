@@ -12,7 +12,7 @@ const PublicationCrawler = () => {
   );
 
   return url && crawlData ? (
-    <ScheduleData data={crawlData} inputUrl={url} setUrl={setUrl} />
+    <ScheduleData data={crawlData} inputUrl={url} setUrl={setUrl} setCrawlData={setCrawlData} />
   ) : (
     <ScheduleLinkInput url={url} setUrl={setUrl} setCrawlData={setCrawlData} />
   );

@@ -78,7 +78,12 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, selectedItems, se
                 <label
                   className={cn('flex items-center gap-2', {
                     'font-medium': isBranch,
-                  })}>
+                  })}
+                  onClick={(event) => {
+                    if (isBranch) {
+                      event?.stopPropagation();
+                    }
+                  }}>
                   <CheckBoxIcon
                     onClick={(e: any) => {
                       e.stopPropagation();

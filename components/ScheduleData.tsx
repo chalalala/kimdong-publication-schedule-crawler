@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ChangeEvent, useState } from 'react';
@@ -36,14 +36,6 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
     exportData(selectedItems);
   };
 
-  const filteredData = useMemo(() => {
-    if (searchTerm) {
-      return data.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
-
-    return data;
-  }, [data, searchTerm]);
-
   return (
     <>
       <div className='mb-1.5 text-sm'>Search by name</div>
@@ -59,7 +51,7 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
         </Button>
       </div>
 
-      <div className='mt-6 flex items-baseline gap-2'>
+      <div className='mt-6 flex items-baseline gap-1'>
         <span className='text-sm font-medium'>Link:</span>
         <div className='flex min-w-0 flex-1 items-center'>
           {inputUrl ? (
@@ -76,7 +68,8 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
       </div>
 
       <AccessibleTreeView
-        rawData={filteredData}
+        searchTerm={searchTerm}
+        rawData={data}
         selectedItems={selectedItems}
         selectedIds={selectedIds}
         setSelectedItems={setSelectedItems}

@@ -29,7 +29,7 @@ export async function scrapeSite(url: string) {
 
     const [_, year] = monthAndYear.split('/');
 
-    $('tr').each((_, elem) => {
+    $('tr').each((index, elem) => {
       const dateString = $(elem).find('td:first-of-type').find('p:last-of-type').text();
       const [date, month] = dateString.split('.');
 
@@ -46,7 +46,7 @@ export async function scrapeSite(url: string) {
 
       const price = $(elem).find('td:nth-child(3)').text();
 
-      results.push({ name, price, releaseDate: currentReleaseDate });
+      results.push({ index, name, price, releaseDate: currentReleaseDate });
     });
     return { results };
   } catch (error) {

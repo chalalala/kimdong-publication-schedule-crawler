@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { FC, memo, useState } from 'react';
+import { FC, memo, useMemo } from 'react';
 import TreeView, { NodeId, flattenTree } from 'react-accessible-treeview';
 import { Checkbox } from '@/components/ui/checkbox';
 import { CrawlData } from '@/types/CrawlData';
@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 
 interface Props {
+  searchTerm: string;
   rawData: CrawlData[];
   selectedIds: NodeId[];
   selectedItems: (CrawlData | undefined)[];
@@ -17,16 +18,32 @@ interface Props {
   setSelectedItems: (items: (CrawlData | undefined)[]) => void;
 }
 
-const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, selectedItems, setSelectedItems, setSelectedIds }) => {
-  const dates = new Set(rawData.map((entry) => entry.releaseDate));
-  const data = Array.from(dates).map((date) => {
-    return {
-      name: formatDate(new Date(date)),
-      children: rawData.filter((entry) => entry.releaseDate === date).map((entry) => ({ metadata: entry, name: `${entry.name} - ${entry.price}` })),
-    };
-  });
+const AccessibleTreeView: FC<Props> = ({ searchTerm, rawData, selectedIds, selectedItems, setSelectedItems, setSelectedIds }) => {
+  const [selectedFilterdIds, filteredData] = useMemo(() => {
+    if (searchTerm) {
+      const displayedItems = rawData.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      const displayedIds = displayedItems.map((item) => item.index);
+      const selectedDisplayedIds = selectedIds.filter((id) => (typeof id === 'number' ? displayedIds.includes(id) : false));
 
-  const flattenData = flattenTree({ name: '', children: data });
+      return [selectedDisplayedIds, displayedItems];
+    }
+
+    return [selectedIds, rawData];
+  }, [rawData, selectedIds, searchTerm]);
+
+  const flattenData = useMemo(() => {
+    const dates = new Set(filteredData.map((entry) => entry.releaseDate));
+    const data = Array.from(dates).map((date) => {
+      return {
+        id: date,
+        name: formatDate(new Date(date)),
+        children: filteredData
+          .filter((entry) => entry.releaseDate === date)
+          .map((entry) => ({ metadata: entry, id: entry.index, name: `${entry.name} - ${entry.price}` })),
+      };
+    });
+    return flattenTree({ name: '', children: data });
+  }, [filteredData]);
 
   const handleSelectAll = () => {
     setSelectedIds(flattenData.map((item) => item.id));
@@ -34,6 +51,7 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, selectedItems, se
 
   const handleDeselectAll = () => {
     setSelectedIds([]);
+    setSelectedItems([]);
   };
 
   return (
@@ -41,10 +59,10 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, selectedItems, se
       <div className='my-6'>
         <div className='flex items-center gap-4'>
           <span className='text-sm font-medium'>{selectedItems.length} items selected</span>
-          <Button variant={'ghost'} className='text-label h-8 px-2 text-xs' onClick={handleSelectAll}>
+          <Button variant={'ghost'} className='h-8 px-2 text-xs text-label' onClick={handleSelectAll}>
             Select All
           </Button>
-          <Button onClick={handleDeselectAll} variant={'ghost'} className='text-label h-8 px-2 text-xs'>
+          <Button onClick={handleDeselectAll} variant={'ghost'} className='h-8 px-2 text-xs text-label'>
             Deselect All
           </Button>
         </div>
@@ -55,17 +73,19 @@ const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, selectedItems, se
         data={flattenData}
         aria-label='Checkbox tree'
         multiSelect
-        selectedIds={selectedIds}
+        selectedIds={selectedFilterdIds}
         propagateSelect
-        propagateSelectUpwards
+        // propagateSelectUpwards
         propagateCollapse
         togglableSelect
         defaultExpandedIds={flattenData.map((item) => item.id)}
-        onSelect={(props) => {
-          const selectedIds = Array.from(props.treeState.selectedIds);
-          const selectedItems = flattenData
-            .filter((item) => item.parent !== 0 && selectedIds.includes(item.id) && !!item.metadata)
-            .map((item) => item.metadata);
+        onNodeSelect={({ isBranch, isSelected, element }) => {
+          const newIds = isBranch ? element.children : [element.id];
+          const newSelectedIds = isSelected ? [...selectedIds, ...newIds] : selectedIds.filter((id) => !newIds.includes(id));
+
+          setSelectedIds(newSelectedIds);
+
+          const selectedItems = rawData.filter((item) => newSelectedIds.includes(item.index));
 
           setSelectedItems(selectedItems);
         }}

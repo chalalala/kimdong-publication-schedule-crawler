@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ChangeEvent, useState } from 'react';
@@ -10,16 +10,15 @@ import { CrawlData } from '@/types/CrawlData';
 import AccessibleTreeView from './AccessibleTreeView';
 import { NodeId } from 'react-accessible-treeview';
 
-type Props = {
+interface Props {
   data: CrawlData[];
   inputUrl: string;
   setUrl: (url: string) => void;
-};
+}
 
-const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
+const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<NodeId[]>([]);
-  const [selectedItems, setSelectedItems] = useState<(CrawlData | undefined)[]>([]);
 
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -30,12 +29,6 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
   };
 
   const handleExport = () => {};
-
-  const handleSelectAll = () => {};
-
-  const handleDeselectAll = () => {
-    setSelectedIds([]);
-  };
 
   const filteredData = useMemo(() => {
     if (searchTerm) {
@@ -65,7 +58,7 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
         <div className='flex min-w-0 flex-1 items-center'>
           {inputUrl ? (
             <>
-              <Link href={inputUrl} target='_blank' className='flex-1 truncate text-xs text-[#475569] underline hover:text-blue-500'>
+              <Link href={inputUrl} target='_blank' className='text-label flex-1 truncate text-xs underline hover:text-blue-500'>
                 {inputUrl}
               </Link>
               <div className='flex size-4 cursor-pointer justify-center rounded-full border-2 bg-[#E2E8F0]' onClick={handleRemoveUrl}>
@@ -76,19 +69,7 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
         </div>
       </div>
 
-      <div className='my-6'>
-        <div className='flex items-center gap-4'>
-          <span className='text-sm font-medium'>{selectedItems.length} items selected</span>
-          <Button variant={'ghost'} className='h-8 px-2 text-xs text-[#475569]'>
-            Select All
-          </Button>
-          <Button onClick={handleDeselectAll} variant={'ghost'} className='h-8 px-2 text-xs text-[#475569]'>
-            Deselect All
-          </Button>
-        </div>
-      </div>
-
-      <AccessibleTreeView rawData={filteredData} selectedIds={selectedIds} setSelectedIds={setSelectedIds} setSelectedItems={setSelectedItems} />
+      <AccessibleTreeView rawData={filteredData} selectedIds={selectedIds} setSelectedIds={setSelectedIds} />
     </>
   );
 };

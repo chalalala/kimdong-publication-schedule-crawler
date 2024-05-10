@@ -17,10 +17,9 @@ type Props = {
 };
 
 const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
-  console.log('🚀 ~ CrawlLinkSuccess ~ data:', data);
   const [inputSearch, setInputSearch] = useState('');
   const [selectedIds, setSelectedIds] = useState<NodeId[]>([]);
-  const [selectedItems, setSelectedItems] = useState<CrawlData[]>([]);
+  const [selectedItems, setSelectedItems] = useState<(CrawlData | undefined)[]>([]);
 
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setInputSearch(event.target.value);
@@ -73,7 +72,7 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
 
       <div className='my-6'>
         <div className='flex items-center gap-4'>
-          <span className='text-sm font-medium'>{data.length} items selected</span>
+          <span className='text-sm font-medium'>{selectedItems.length} items selected</span>
           <Button variant={'ghost'} className='h-8 px-2 text-xs text-[#475569]'>
             Select All
           </Button>
@@ -83,18 +82,7 @@ const ScheduleData = ({ data, inputUrl, setUrl }: Props) => {
         </div>
       </div>
 
-      <div>
-        <AccessibleTreeView rawData={data} selectedIds={selectedIds} setSelectedIds={setSelectedIds} setSelectedItems={setSelectedItems} />
-        {/* <ol>
-          {data.map((item, index) => {
-            return (
-              <li key={`${item}_${index}`}>
-                {item.name} - {item.releaseDate} - {item.price}
-              </li>
-            );
-          })}
-        </ol> */}
-      </div>
+      <AccessibleTreeView rawData={data} selectedIds={selectedIds} setSelectedIds={setSelectedIds} setSelectedItems={setSelectedItems} />
     </>
   );
 };

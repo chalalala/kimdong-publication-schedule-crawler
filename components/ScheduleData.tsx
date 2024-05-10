@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { CrawlData } from '@/types/CrawlData';
 import AccessibleTreeView from './AccessibleTreeView';
 import { NodeId } from 'react-accessible-treeview';
+import { exportData } from '@/utils/file';
 
 interface Props {
   data: CrawlData[];
@@ -19,6 +20,7 @@ interface Props {
 const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<NodeId[]>([]);
+  const [selectedItems, setSelectedItems] = useState<(CrawlData | undefined)[]>([]);
 
   const handleChangeInputSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -28,7 +30,9 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl }) => {
     setUrl('');
   };
 
-  const handleExport = () => {};
+  const handleExport = () => {
+    exportData(selectedItems);
+  };
 
   const filteredData = useMemo(() => {
     if (searchTerm) {
@@ -69,7 +73,13 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl }) => {
         </div>
       </div>
 
-      <AccessibleTreeView rawData={filteredData} selectedIds={selectedIds} setSelectedIds={setSelectedIds} />
+      <AccessibleTreeView
+        rawData={filteredData}
+        selectedItems={selectedItems}
+        selectedIds={selectedIds}
+        setSelectedItems={setSelectedItems}
+        setSelectedIds={setSelectedIds}
+      />
     </>
   );
 };

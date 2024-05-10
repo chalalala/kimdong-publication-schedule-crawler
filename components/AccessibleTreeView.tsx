@@ -12,12 +12,12 @@ import { Button } from './ui/button';
 interface Props {
   rawData: CrawlData[];
   selectedIds: NodeId[];
+  selectedItems: (CrawlData | undefined)[];
   setSelectedIds: (ids: NodeId[]) => void;
+  setSelectedItems: (items: (CrawlData | undefined)[]) => void;
 }
 
-const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, setSelectedIds }) => {
-  const [selectedItems, setSelectedItems] = useState<(CrawlData | undefined)[]>([]);
-
+const AccessibleTreeView: FC<Props> = ({ rawData, selectedIds, selectedItems, setSelectedItems, setSelectedIds }) => {
   const dates = new Set(rawData.map((entry) => entry.releaseDate));
   const data = Array.from(dates).map((date) => {
     return {

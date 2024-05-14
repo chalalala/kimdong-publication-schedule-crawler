@@ -46,7 +46,8 @@ const AccessibleTreeView: FC<Props> = ({ searchTerm, rawData, selectedIds, selec
   }, [filteredData]);
 
   const handleSelectAll = () => {
-    setSelectedIds(flattenData.map((item) => item.id));
+    setSelectedIds(rawData.map((item) => item.index));
+    setSelectedItems(rawData);
   };
 
   const handleDeselectAll = () => {

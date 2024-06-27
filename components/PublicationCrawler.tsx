@@ -8,7 +8,7 @@ import { CrawlData } from '@/types/CrawlData';
 const PublicationCrawler = () => {
   const [crawlData, setCrawlData] = useState<CrawlData[] | undefined>();
   const [url, setUrl] = useState(
-    () => `https://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-${new Date().getMonth() + 1}-2024`
+    () => `https://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-${new Date().getMonth() + 2}-2024`
   );
 
   return url && crawlData ? (

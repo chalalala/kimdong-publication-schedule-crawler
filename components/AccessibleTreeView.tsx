@@ -39,10 +39,11 @@ const AccessibleTreeView: FC<Props> = ({ searchTerm, rawData, selectedIds, selec
         name: formatDate(new Date(date)),
         children: filteredData
           .filter((entry) => entry.releaseDate === date)
-          .map((entry) => ({ metadata: entry, id: entry.index, name: `${entry.name} - ${entry.price}` })),
+          .map((entry) => ({ metadata: entry, id: entry.name, name: `${entry.name} - ${entry.price}` })),
       };
     });
-    return flattenTree({ name: '', children: data });
+
+    return flattenTree({ name: 'root', children: data });
   }, [filteredData]);
 
   const handleSelectAll = () => {

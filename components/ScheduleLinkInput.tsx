@@ -26,6 +26,7 @@ const ScheduleLinkInput: FC<Props> = ({ url, setUrl, setCrawlData }) => {
       setCrawlData(results);
       setHasError(error ? true : false);
     } catch (err) {
+      setHasError(true);
       console.error(err);
     }
   };

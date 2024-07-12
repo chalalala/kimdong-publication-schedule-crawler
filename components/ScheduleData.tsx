@@ -9,7 +9,8 @@ import Link from 'next/link';
 import { CrawlData } from '@/types/CrawlData';
 import AccessibleTreeView from './AccessibleTreeView';
 import { NodeId } from 'react-accessible-treeview';
-import { exportData } from '@/utils/file';
+import { exportData } from '@/utils/exportData';
+import { GetUrlForm } from './GetUrlForm';
 
 interface Props {
   data: CrawlData[];
@@ -49,6 +50,7 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
         <Button onClick={handleExport} variant={'ghost'} className='size-10 bg-[#E2E8F0] p-0'>
           <Download size={16} />
         </Button>
+        <GetUrlForm selectedItems={selectedItems} />
       </div>
 
       <div className='mt-6 flex items-baseline gap-1'>

@@ -40,7 +40,9 @@ const ScheduleLinkInput: FC<Props> = ({ url, setUrl, setCrawlData }) => {
         </div>
         <Button type='submit'>Crawl</Button>
       </form>
-      {hasError ? <div className='mt-[10px] text-xs text-[#EB5757]'>Invalid link. Head to nxbkimdong.com.vn to get the correct link.</div> : null}
+      {hasError ? (
+        <div className='mt-[10px] text-xs font-medium text-red-500'>Invalid link. Head to nxbkimdong.com.vn to get the correct link.</div>
+      ) : null}
     </>
   );
 };

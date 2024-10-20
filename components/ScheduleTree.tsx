@@ -18,7 +18,7 @@ interface Props {
   setSelectedItems: (items: (CrawlData | undefined)[]) => void;
 }
 
-const AccessibleTreeView: FC<Props> = ({ searchTerm, rawData, selectedIds, selectedItems, setSelectedItems, setSelectedIds }) => {
+const ScheduleTree: FC<Props> = ({ searchTerm, rawData, selectedIds, selectedItems, setSelectedItems, setSelectedIds }) => {
   const [selectedFilterdIds, filteredData] = useMemo(() => {
     if (searchTerm) {
       const displayedItems = rawData.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -141,4 +141,4 @@ const CheckBoxIcon = ({ variant, ...rest }: { variant: string } & any) => {
   }
 };
 
-export default memo(AccessibleTreeView);
+export default memo(ScheduleTree);

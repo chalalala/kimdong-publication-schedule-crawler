@@ -5,13 +5,13 @@ import { Button } from './ui/button';
 import { Copy } from 'lucide-react';
 import { uploadFile } from '@/actions/uploadFile';
 import { CrawlData } from '@/types/CrawlData';
-import { getSecretKey } from '@/actions/isCorrectKey';
+import { getSecretKey } from '@/actions/getSecretKey';
 
 interface Props {
   selectedItems: (CrawlData | undefined)[];
 }
 
-export const GetUrlForm: FC<Props> = ({ selectedItems }) => {
+export const GetUrlButton: FC<Props> = ({ selectedItems }) => {
   const [secretKey, setSecretKey] = useState<string | null>('');
 
   const getUrl = async () => {

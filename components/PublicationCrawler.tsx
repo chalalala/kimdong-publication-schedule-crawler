@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import ScheduleLinkInput from './ScheduleLinkInput';
+import ScheduleLinkForm from './ScheduleLinkForm';
 import ScheduleData from './ScheduleData';
 import { CrawlData } from '@/types/CrawlData';
 
@@ -18,7 +18,7 @@ const PublicationCrawler = () => {
   return url && crawlData ? (
     <ScheduleData data={crawlData} inputUrl={url} setUrl={setUrl} setCrawlData={setCrawlData} />
   ) : (
-    <ScheduleLinkInput url={url} setUrl={setUrl} setCrawlData={setCrawlData} />
+    <ScheduleLinkForm url={url} setUrl={setUrl} setCrawlData={setCrawlData} />
   );
 };
 

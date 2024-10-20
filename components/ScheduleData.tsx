@@ -7,10 +7,10 @@ import { ChangeEvent, useState } from 'react';
 import { Download, SearchIcon, X } from 'lucide-react';
 import Link from 'next/link';
 import { CrawlData } from '@/types/CrawlData';
-import AccessibleTreeView from './AccessibleTreeView';
+import ScheduleTree from './ScheduleTree';
 import { NodeId } from 'react-accessible-treeview';
 import { exportData } from '@/utils/exportData';
-import { GetUrlForm } from './GetUrlForm';
+import { GetUrlButton } from './GetUrlButton';
 
 interface Props {
   data: CrawlData[];
@@ -50,7 +50,7 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
         <Button onClick={handleExport} variant={'ghost'} className='size-10 bg-[#E2E8F0] p-0'>
           <Download size={16} />
         </Button>
-        <GetUrlForm selectedItems={selectedItems} />
+        <GetUrlButton selectedItems={selectedItems} />
       </div>
 
       <div className='mt-6 flex items-baseline gap-1'>
@@ -69,7 +69,7 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
         </div>
       </div>
 
-      <AccessibleTreeView
+      <ScheduleTree
         searchTerm={searchTerm}
         rawData={data}
         selectedItems={selectedItems}

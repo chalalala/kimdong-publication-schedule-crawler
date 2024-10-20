@@ -25,7 +25,7 @@ const CrawlButton = () => {
   );
 };
 
-const ScheduleLinkInput: FC<Props> = ({ url, setUrl, setCrawlData }) => {
+const ScheduleLinkForm: FC<Props> = ({ url, setUrl, setCrawlData }) => {
   const [hasError, setHasError] = useState(false);
 
   const handleChangeInputUrl = (event: ChangeEvent<HTMLInputElement>) => {
@@ -59,4 +59,4 @@ const ScheduleLinkInput: FC<Props> = ({ url, setUrl, setCrawlData }) => {
   );
 };
 
-export default ScheduleLinkInput;
+export default ScheduleLinkForm;

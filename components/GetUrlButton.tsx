@@ -26,8 +26,6 @@ export const GetUrlButton: FC<Props> = ({ selectedItems }) => {
       } else {
         setSecretKey(key);
       }
-
-      return;
     }
 
     try {

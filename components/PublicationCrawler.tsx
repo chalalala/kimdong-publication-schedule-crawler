@@ -4,21 +4,41 @@ import React, { useState } from 'react';
 import ScheduleLinkForm from './ScheduleLinkForm';
 import ScheduleData from './ScheduleData';
 import { CrawlData } from '@/types/CrawlData';
+import { ScheduleList } from './ScheduleList';
+import { scrapeDetails } from '@/utils/scrapeSite';
+import { Loader } from './Loader';
 
 const PublicationCrawler = () => {
   const [crawlData, setCrawlData] = useState<CrawlData[] | undefined>();
-  const [url, setUrl] = useState(() => {
-    const today = new Date().getDate();
-    const thisMonth = new Date().getMonth() + 1;
-    const queryMonth = today > 25 ? thisMonth + 1 : thisMonth;
+  const [url, setUrl] = useState('');
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    return `https://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/lich-phat-hanh-sach-dinh-ki-thang-${queryMonth}-2024`;
-  });
+  const handleGetScrapeSite = async (url: string) => {
+    try {
+      setIsLoading(true);
+      const { results, error } = await scrapeDetails(url);
+      setCrawlData(results);
+      setHasError(!!error);
+    } catch (err) {
+      setHasError(true);
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <Loader className='h-6 w-6' />;
+  }
 
   return url && crawlData ? (
     <ScheduleData data={crawlData} inputUrl={url} setUrl={setUrl} setCrawlData={setCrawlData} />
   ) : (
-    <ScheduleLinkForm url={url} setUrl={setUrl} setCrawlData={setCrawlData} />
+    <>
+      <ScheduleLinkForm url={url} hasError={hasError} setUrl={setUrl} handleGetScrapeSite={handleGetScrapeSite} />
+      <ScheduleList setUrl={setUrl} handleGetScrapeSite={handleGetScrapeSite} />
+    </>
   );
 };
 

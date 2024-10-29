@@ -1,18 +1,17 @@
 'use client';
 
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ChangeEvent, useState } from 'react';
-import { scrapeSite } from '@/utils/scrapeSite';
-import { CrawlData } from '@/types/CrawlData';
+import { ChangeEvent } from 'react';
 import { Loader } from './Loader';
 import { useFormStatus } from 'react-dom';
 
 interface Props {
   url: string;
+  hasError: boolean;
   setUrl: (url: string) => void;
-  setCrawlData: (data: CrawlData[] | undefined) => void;
+  handleGetScrapeSite: (url: string) => void;
 }
 
 const CrawlButton = () => {
@@ -25,28 +24,15 @@ const CrawlButton = () => {
   );
 };
 
-const ScheduleLinkForm: FC<Props> = ({ url, setUrl, setCrawlData }) => {
-  const [hasError, setHasError] = useState(false);
-
+const ScheduleLinkForm: FC<Props> = ({ url, hasError, setUrl, handleGetScrapeSite }) => {
   const handleChangeInputUrl = (event: ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
-  };
-
-  const handleGetScrapeSite = async () => {
-    try {
-      const { results, error } = await scrapeSite(url);
-      setCrawlData(results);
-      setHasError(error ? true : false);
-    } catch (err) {
-      setHasError(true);
-      console.error(err);
-    }
   };
 
   return (
     <>
       <div className='mb-1.5 text-sm'>Publication schedule link</div>
-      <form className='flex w-full space-x-2' action={handleGetScrapeSite}>
+      <form className='flex w-full space-x-2' action={() => handleGetScrapeSite(url)}>
         <div className='flex flex-1 flex-col space-y-1.5'>
           <Input id='url' placeholder='Enter schedule link here' value={url} onChange={handleChangeInputUrl} />
         </div>

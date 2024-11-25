@@ -19,7 +19,7 @@ const CrawlButton = () => {
 
   return (
     <Button type='submit' disabled={pending}>
-      {pending ? <Loader className='h-6 w-6' /> : <span>Crawl</span>}
+      {pending ? <Loader className='h-8 w-8' /> : <span>Crawl</span>}
     </Button>
   );
 };

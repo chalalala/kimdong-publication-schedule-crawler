@@ -29,7 +29,7 @@ const PublicationCrawler = () => {
   };
 
   if (isLoading) {
-    return <Loader className='h-6 w-6' />;
+    return <Loader className='h-8 w-8' />;
   }
 
   return url && crawlData ? (

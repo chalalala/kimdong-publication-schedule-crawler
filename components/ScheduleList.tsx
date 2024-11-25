@@ -1,6 +1,7 @@
 import { scrapeList } from '@/utils/scrapeSite';
 import React, { FC } from 'react';
 import useSWR from 'swr';
+import { Loader } from './Loader';
 
 interface Props {
   setUrl: (url: string) => void;
@@ -8,13 +9,22 @@ interface Props {
 }
 
 export const ScheduleList: FC<Props> = ({ setUrl, handleGetScrapeSite }) => {
-  const { data } = useSWR('schedule-list', scrapeList);
+  const { data, isLoading } = useSWR('schedule-list', scrapeList);
+
+  if (isLoading) {
+    return (
+      <div className='my-5 flex justify-center'>
+        <Loader className='h-8 w-8' />
+      </div>
+    );
+  }
 
   if (!data) {
     return null;
   }
 
   const displayedData = data?.slice(0, 3) || [];
+
   const onSelectItem = (url: string) => {
     setUrl(url);
     handleGetScrapeSite(url);

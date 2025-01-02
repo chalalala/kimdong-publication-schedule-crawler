@@ -14,7 +14,7 @@ export const uploadFile = async (content: (CrawlData | undefined)[]) => {
   formData.append('file', blob, 'publication-schedule.json');
 
   const queryParams = new URLSearchParams({
-    expires_in: '5',
+    expires_in: '30',
     expires_unit: 'minutes',
   });
 

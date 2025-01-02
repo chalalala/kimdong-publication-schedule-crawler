@@ -38,7 +38,9 @@ export async function scrapeDetails(url: string) {
       let price = '';
 
       if (!!dateString.trim()) {
-        currentReleaseDate = new Date(`${year}-${month}-${date}`).toISOString();
+        try {
+          currentReleaseDate = new Date(`${year}-${month}-${date}`).toISOString();
+        } catch (error) {}
         name = $(elem).find('td:nth-child(3)').text();
         price = $(elem).find('td:nth-child(4)').text();
       } else {

@@ -98,8 +98,9 @@ const ScheduleTree: FC<Props> = ({ searchTerm, rawData, selectedIds, selectedIte
                 {isBranch && <ArrowIcon className='size-4' isOpen={isExpanded} />}
 
                 <label
-                  className={cn('flex items-center gap-2', {
+                  className={cn('flex cursor-pointer items-center gap-2 hover:text-gray-600', {
                     'font-medium': isBranch,
+                    'font-bold text-gray-700': isSelected,
                   })}
                   onClick={(event) => {
                     if (isBranch) {

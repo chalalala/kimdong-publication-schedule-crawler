@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ChangeEvent, useState } from 'react';
@@ -37,6 +37,19 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
     exportData(selectedItems);
   };
 
+  // Confirmation on leaving page
+  useEffect(() => {
+    window.onbeforeunload = function (e) {
+      if (selectedItems.length > 0) {
+        return 'Do you want to exit this page?';
+      }
+    };
+
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [selectedItems]);
+
   return (
     <>
       <div className='mb-1.5 text-sm'>Search by name</div>
@@ -47,9 +60,11 @@ const ScheduleData: FC<Props> = ({ data, inputUrl, setUrl, setCrawlData }) => {
             <SearchIcon size={16} />
           </Button>
         </div>
+
         <Button onClick={handleExport} variant={'ghost'} className='size-10 bg-[#E2E8F0] p-0'>
           <Download size={16} />
         </Button>
+
         <GetUrlButton selectedItems={selectedItems} />
       </div>
 

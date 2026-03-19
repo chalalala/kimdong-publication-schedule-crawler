@@ -41,15 +41,15 @@ export async function scrapeDetails(url: string) {
         try {
           currentReleaseDate = new Date(`${year}-${month}-${date}`).toISOString();
         } catch (error) {}
-        name = $(elem).find('td:nth-child(3)').text();
-        price = $(elem).find('td:nth-child(4)').text();
+        name = $(elem).find('td:nth-child(3)').text().trim();
+        price = $(elem).find('td:nth-child(4)').text().trim();
       } else {
-        name = $(elem).find('td:nth-child(2)').text();
-        price = $(elem).find('td:nth-child(3)').text();
+        name = $(elem).find('td:nth-child(2)').text().trim();
+        price = $(elem).find('td:nth-child(3)').text().trim();
       }
 
       // ignore empty rows
-      if (!name.trim()) {
+      if (!name) {
         return;
       }
 
@@ -63,7 +63,7 @@ export async function scrapeDetails(url: string) {
 
 export async function scrapeList() {
   const baseUrl = 'https://nxbkimdong.com.vn/';
-  const url = 'https://nxbkimdong.com.vn/blogs/lich-phat-hanh-sach-dinh-ky/';
+  const url = 'https://nxbkimdong.com.vn/lich-phat-hanh-sach-dinh-ky';
   const options = {
     httpsAgent: new https.Agent({
       rejectUnauthorized: false,
@@ -75,12 +75,11 @@ export async function scrapeList() {
   const { data } = await axios.get(url, options);
   const $ = load(data);
 
-  const blogBody = $('.blog-body');
-  const articles = $(blogBody).find('.article-item.article-item-blog');
+  const articles = $('.news-item');
 
   articles.each((_, elem) => {
-    const titleEl = $(elem).find('.article-title')?.children()?.first();
-    const title = $(titleEl).text();
+    const titleEl = $(elem).find('a')?.first();
+    const title = $(titleEl).attr('title') ?? '';
     const href = $(titleEl).attr('href') ?? '';
     const link = new URL(href, baseUrl).href;
 
